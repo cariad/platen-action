@@ -1,0 +1,43 @@
+name: Press with Platen
+description: >-
+  Presses the values in a YAML file into a template, or into every template in
+  a directory, with Platen.
+
+inputs:
+  templates:
+    description: The template or directory of templates to press.
+    required: true
+
+  values:
+    description: The YAML file of values to press into the templates.
+    required: true
+
+  output:
+    description: The file or directory to press the templates into.
+    required: true
+
+  platen-version:
+    description: The version of Platen to press with. Defaults to the latest release.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      id: python
+      uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      with:
+        python-version: ">=3.14"
+        update-environment: false
+
+    - name: Press the templates
+      shell: bash
+      env:
+        OUTPUT: ${{ inputs.output }}
+        PLATEN_VERSION: ${{ inputs.platen-version }}
+        PYTHON: ${{ steps.python.outputs.python-path }}
+        TEMPLATES: ${{ inputs.templates }}
+        VALUES: ${{ inputs.values }}
+      # `platen`, or `platen==X.Y.Z` when a version is given. `--no-cache`, so
+      # that a runner never reuses an older Platen that pipx cached.
+      run: pipx run --no-cache --python "$PYTHON" "platen${PLATEN_VERSION:+==$PLATEN_VERSION}" -- "$TEMPLATES" "$VALUES" "$OUTPUT"
