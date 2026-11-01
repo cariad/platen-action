@@ -39,7 +39,7 @@ CI's `test` job runs the action on every runner in its matrix. It presses `tests
 Dependabot bumps the actions in `action.yml` and `.github/workflows/`. Bump everything else by hand:
 
 - **Platen:** nothing to bump, because the action runs the latest release, and so does CI.
-- **Python:** when Platen needs a newer Python, `python-version` in `action.yml`, and the README's [Versions](README.md#versions).
+- **Python:** when Platen needs a newer Python, `python-version` in `action.yml`.
 - **mise:** `min_version` in `.config/mise.toml`, and `version` in the `jdx/mise-action` step in `.github/workflows/ci.yml`.
 - **Tools:** `.config/mise.toml`, then run `mise lock`.
-- **Runners:** the `test` matrix in `.github/workflows/ci.yml`.
+- **Runners:** the `test` matrix and the `lint` job's `runs-on` in `.github/workflows/ci.yml`.
