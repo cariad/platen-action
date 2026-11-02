@@ -63,6 +63,14 @@ jobs:
         with:
           persist-credentials: false
 
+      # pipx would run a executable named `platen` in the working directory if
+      # it found one, so we move into a new, empty, temporary directory first
+      # to ensure we execute only the `platen` that we download.
+      #
+      # This fake executable ensures that we're defensive.
+      - name: Plant a fake `platen`
+        run: echo 'raise SystemExit("pipx ran the workspace file named platen")' > platen
+
       - name: Press a template
         uses: $/
         with:
