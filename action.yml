@@ -54,4 +54,11 @@ runs:
         empty_dir=$(mktemp -d)
         cd "$empty_dir"
 
-        pipx run --no-cache --python "$PYTHON" "platen${PLATEN_VERSION:+==$PLATEN_VERSION}" -- "$TEMPLATES" "$VALUES" "$OUTPUT"
+        pipx                                           \
+          run                                          \
+          --no-cache                                   \
+          --python "$PYTHON"                           \
+          "platen${PLATEN_VERSION:+==$PLATEN_VERSION}" \
+          --templates "$TEMPLATES"                     \
+          --values    "$VALUES"                        \
+          --out       "$OUTPUT"
